@@ -1,0 +1,138 @@
+
+      ## Q1  ##
+
+import numpy as np
+import pandas as pd
+
+columns_name = ['Country(Nominal)', 'Grades Levels of School(Interval)',"Weight(Ratio)","Socioeconomic status(Ordinal)"]
+datas = np.array([["Ankara",1,80,"low income"], ["İstanbul",3,90,"high income"], ["Adana",2,56,"low income"], ["İzmir",4, 76,"middle income"], ["Ağrı",3, 84,"low income"]])
+dataframe = pd.DataFrame(data= datas, columns= columns_name)
+print(dataframe)
+
+
+## Q2 radius_mean ##
+import pandas as pd
+df=pd.read_table("data.csv",sep=",")
+df[["radius_mean", "area_mean", "compactness_mean"]]
+radius_mean_count=df["radius_mean"].count()
+radius_mean_mean=df["radius_mean"].mean()
+radius_mean_std=df["radius_mean"].std()
+radius_mean_min=df["radius_mean"].min()
+radius_mean_max=df["radius_mean"].max()
+Q1=df["radius_mean"].quantile(0.25)
+Q2=df["radius_mean"].quantile(0.50)
+Q3=df["radius_mean"].quantile(0.75)
+Q4=df["radius_mean"].quantile(1)
+IQR=(Q3-Q1)
+Alt_sınır= Q1 - 1.5 * IQR
+Üst_sınır= Q3 + 1.5 * IQR
+print("Alt sınır=",Alt_sınır,"Üst sınır=",Üst_sınır,"Min=",radius_mean_min,"Max=",radius_mean_max)
+outliers_df = df[(df.radius_mean > Üst_sınır) | (df.radius_mean < Alt_sınır)]
+outliers_df.radius_mean
+output:
+Alt sınır= 5.579999999999999 Üst sınır= 21.9 Min= 6.981 Max= 28.11
+14 tane outliers var 
+
+                     ## Q2 area_mean ##
+import pandas as pd
+df=pd.read_table("data.csv",sep=",")
+df[["radius_mean", "area_mean", "compactness_mean"]]
+area_mean_count=df["area_mean"].count()
+area_mean_mean=df["area_mean"].mean()
+area_mean_std=df["area_mean"].std()
+area_mean_min=df["area_mean"].min()
+area_mean_max=df["area_mean"].max()
+Q1=df["area_mean"].quantile(0.25)
+Q2=df["area_mean"].quantile(0.50)
+Q3=df["area_mean"].quantile(0.75)
+Q4=df["area_mean"].quantile(1)
+IQR=(Q3-Q1)
+Alt_sınır= Q1 - 1.5 * IQR
+Üst_sınır= Q3 + 1.5 * IQR
+print("Alt sınır=",Alt_sınır,"Üst sınır=",Üst_sınır,"Min=",area_mean_min,"Max=",area_mean_max)
+outliers_df = df[(df.area_mean > Üst_sınır) | (df.area_mean < Alt_sınır)]
+count=(outliers_df.area_mean).count()
+print(count)
+
+Alt sınır= -123.30000000000001 Üst sınır= 1326.3000000000002 Min= 143.5 Max= 2501.0
+25 tane outliers var 
+
+
+                     ## Q2 compactness_mean ##
+import pandas as pd
+df=pd.read_table("data.csv",sep=",")
+df[["radius_mean", "area_mean", "compactness_mean"]]
+compactness_mean_count=df["compactness_mean"].count()
+compactness_mean_mean=df["compactness_mean"].mean()
+compactness_mean_std=df["compactness_mean"].std()
+compactness_mean_min=df["compactness_mean"].min()
+compactness_mean_max=df["compactness_mean"].max()
+Q1=df["compactness_mean"].quantile(0.25)
+Q2=df["compactness_mean"].quantile(0.50)
+Q3=df["compactness_mean"].quantile(0.75)
+Q4=df["compactness_mean"].quantile(1)
+IQR=(Q3-Q1)
+Alt_sınır= Q1 - 1.5 * IQR
+Üst_sınır= Q3 + 1.5 * IQR
+print("Alt sınır=",Alt_sınır,"Üst sınır=",Üst_sınır,"Min=",compactness_mean_min,"Max=",compactness_mean_max)
+outliers_df = df[(df.compactness_mean > Üst_sınır) | (df.compactness_mean < Alt_sınır)]
+count=(outliers_df.compactness_mean).count()
+print(count)
+
+
+
+
+##Gerekli istatistiksel işlemleri yaptığımızda “Radius mean” değişkeninde 14, “Area mean” değişkeninde 25 ve “Compactness mean” değişkeninde ise 16 aykırı değer filtrelendiğini##
+##görüyoruz.##
+##Bu verilere bakarak,##
+##•	Aykırı olarak filtrelenen gözlem sayısı 3 değişkin tipi içinde tüm veri setine kıyasla düşük bir yüzdeyi oluşturuyor. Aykırı değerlerin sayısı oransal olarak çok düşük olduğu##
+##için herhangi bir hatadan kaynaklamadağını düşünüyorum.##
+##•	“Radius mean” ve “Compactness mean” değişkenlerinin üst sınır değerlerine ve maksimum değerlerine baktığımızda çok büyük bir fark görmüyoruz. Buda ayrıkı noktaların veri ##
+##setimizin içinde kalması gerektiğini gösteriyor. Bu verileri silerek ileride veriden elde edebileceğimiz farklı bulguları kaybedebiliriz. ##
+##•	Diğer taraftan “Area mean” değişkenin üst sınır değerine ve maksimum değerine baktığımızda arada oldukça yüksek bir fark görüyoruz. Buda bir kaç noktada verinin hatalı ##
+##ya da çok ekstrem bir durumdan kaynaklı farklılık gösterebileceğini anlatıyor.##
+
+
+
+                                                                    ##  Q3  ##
+from math import sqrt
+import pandas as pd
+df=pd.read_table("data.csv",sep=",")
+df[["radius_mean", "area_mean", "compactness_mean"]]
+cov=df[["radius_mean", "area_mean", "compactness_mean"]].cov()
+cor=df[["radius_mean", "area_mean", "compactness_mean"]].corr()
+cor_spearman=df[["radius_mean", "area_mean", "compactness_mean"]].corr(method="spearman")
+cor_pearson=df[["radius_mean", "area_mean", "compactness_mean"]].corr(method="pearson")
+cov,cor,cor_spearman,cor_pearson
+radius_mean_var=int(df["radius_mean"].std())^2
+area_mean_var=int(df["area_mean"].std())^2
+compactness_mean_var=int(df["compactness_mean"].std())^2
+
+s_radius_area=sqrt((568*radius_mean_var + 568*area_mean_var) / 1132)
+s_radius_compactness=sqrt((568*radius_mean_var + 568*compactness_mean_var) / 1132)
+s_area_compactness=sqrt((568*area_mean_var + 568*compactness_mean_var) / 1132)
+s_radius_area,s_radius_compactness, s_area_compactness
+print("Korelasyonlar=\n",cor,"\nKovaryanslar\n",cov,"\nPearson Correlation Coefficient=\n",cor_pearson,"\nSpearman Rank Coefficient=\n",cor_spearman,"\nEffect Size=\n",s_radius_area,s_radius_compactness, s_area_compactness)
+
+##3 değişkenin korelasyonlarını, covaryanslarını, pearson correlation coefficientlarını, spearman Rank coefficientlarını ve Effect Sizeları incelendiğinde,##
+##Kovaryans değerlerinin hepsi pozitif çıktığı için 3 değişken de birbirleri ile pozitif bir bağ sahip olduğunu,##
+##Radius mean ve Area mean arasında pozitif yönde çok yüksek bir korelasyon olduğunu,##
+##Radius mean ve Compactness mean arasında pozitif yönde orta şiddette korelasyon olduğunu,##
+##Compactness mean ve Area mean arasında pozitif yönde orta şiddette korelasyon olduğunu söyleyebiliriz.##
+##Ayrıca 3 değişkende birbirlerine bağlı değişkenlerdir fakat Radius mean ve area mean arasında ki bağ çok daha kuvvetlidir ikisi birlikte hareket eder. ##
+
+#### Q4  ####
+##Bayes Teoreminin gerçek hayatta karşımıza çıkan ve kullanılan örnekleri,##
+##1)Bayes teoremine örnek olarak günümüze yapılan korona virüs testlerini örnek gösterebiliriz.##
+##Eğer korona görülme sıklığı 1000’ de 1 ise, yani her 1000 kişiden 1’I korona oluyorsa. Ve korona testinde doğruluğu %99 ihtimalle doğru sonuç veriyor gibi düşünelim.##
+##Bu durumda eğer korona virüs varsa %99 ihtimalle tespit ediliyor. Diğer taraftan test sonucu %1 ihtimalle hatalı oluyor. Korona değilken korona gibi gözüküyorsunuz. Bu type-1 error olur.##
+##Aynı şekilde korona olmanıza rağmen test negatif çıkabilir. Bu type-2 error olur.##
+##Bu duruma göre test sonucunuz pozitif çıksa bile korona olmama ihtimalimiz bayes teoremine göre %91 oluyor. ##
+##2)Bayes teoremine bir başka örnek olarak günümüzde yaygın olarak kullanılan bir uygulama olarak spam filtrelemesi, bayes teoremi maillerinin spam olup olmadığını anlamamıza yardımcı olur. Bu işlem geçmiş maillerimizi belirle sınıflara ayrılır. Bundan sonra bu test verileri üzerinde gerekli olasılık işlemleri yapılarak, yeni gelen mailin hangi kategoride olduğunu tespit edilir.##
+##3)Bayes teoremine bir başka örnek kanser ve kanser olmama olasığı gösterebiliriz. Popülasyonun belli bir oranı kanser olduğunu düşünelim.  Ayrıca kişilere pozitif ve negatif olmak üzere iki sonucu olan bir laboratuvar testi uygulanmış olsun. Test, hastalığın var olduğu ve olmadığı durumların ürettiği oranlara bakılarak, gerekli olasılık işlemleri yapılırsa test sonucu pozitif olan bir hastanın aslında kanser olmama olasılığını görebiliriz.##
+##4)Günlük hayatta bir market düşünelim. Markete iki ayrı marka yumurta gelmektedir, bunlar A ve B markaları olsun. Edinilen tecrübe ve tutulan kayıtlardan yumurtalar ile ilgili kırık olma oranı biliniyor olsun. Burada bir gün için A markasından gelen bir yumurtanın kırık olma olasılığı hesaplamak için bayes teomeri kullanırız. ##
+##5)Günlük hayatta işe yeni giren bir insanın, işe servis veya araba ile gitteceğini tahmin etmek için bayes teoremi kullanabiliriz. Bu durumda öncelikle bir grup insanın yaş ve maaş bilgileri ile işe servis veya araba ile gittiklerine dair bilgileri toplayıp bu bilgilere gerekli olasılıksal işlemler yapılır ve yeni işe giren bireyin, işe servis veya arabayka gitceğini tahmin edebiliriz. ##
+
+
+
+## Q5 ###
